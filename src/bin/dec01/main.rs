@@ -27,6 +27,9 @@ fn run(args: Vec<String>) -> Result<()> {
         list2.push(i2);
     }
 
+    list1.sort();
+    list2.sort();
+
     println!("List 1: {list1:?}");
     println!("List 2: {list2:?}");
 
