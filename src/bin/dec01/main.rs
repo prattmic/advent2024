@@ -30,8 +30,13 @@ fn run(args: Vec<String>) -> Result<()> {
     list1.sort();
     list2.sort();
 
-    println!("List 1: {list1:?}");
-    println!("List 2: {list2:?}");
+    let mut dist: i64 = 0;
+
+    for (i1, i2) in list1.iter().zip(list2.iter()) {
+        dist += (i1 - i2).abs();
+    }
+
+    println!("Distance: {dist}");
 
     Ok(())
 }
