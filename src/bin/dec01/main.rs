@@ -1,6 +1,18 @@
+use anyhow::{Context, Result};
 use std::env;
 use std::fs;
 use std::process::ExitCode;
+
+fn run(args: Vec<String>) -> Result<()> {
+    let file = &args[1];
+
+    let contents = fs::read_to_string(file)
+        .with_context(|| format!("failed to read input from {file}"))?;
+
+    println!("Read {} bytes", contents.len());
+
+    Ok(())
+}
 
 fn main() -> ExitCode {
     let args: Vec<String> = env::args().collect();
@@ -10,11 +22,10 @@ fn main() -> ExitCode {
         return ExitCode::from(1);
     }
 
-    let file = &args[1];
-
-    let contents = fs::read_to_string(file).expect("error reading file");
-
-    println!("Read {} bytes", contents.len());
+    if let Err(e) = run(args) {
+        println!("error running: {e:?}");
+        return ExitCode::from(1);
+    };
 
     ExitCode::SUCCESS
 }
