@@ -1,4 +1,5 @@
 use anyhow::{format_err, Context, Result};
+use std::collections::HashMap;
 use std::env;
 use std::fs;
 use std::process::ExitCode;
@@ -37,6 +38,26 @@ fn run(args: Vec<String>) -> Result<()> {
         });
 
     println!("Distance: {dist}");
+
+    let mut occurances: HashMap<i64, i64> = HashMap::new();
+
+    for v in list2 {
+        let count = match occurances.get(&v) {
+            Some(curr) => curr + 1,
+            None => 1
+        };
+
+        occurances.insert(v, count);
+    }
+
+    let similarity: i64 = list1.iter()
+        .fold(0, |acc, i1| {
+            let occ = occurances.get(&i1).unwrap_or(&0);
+            let sim = i1 * occ;
+            acc + sim
+        });
+
+    println!("Similarity: {similarity}");
 
     Ok(())
 }
